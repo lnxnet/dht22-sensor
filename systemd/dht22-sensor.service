@@ -1,0 +1,17 @@
+[Unit]
+Description=DHT22 sensor daemon
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory=/
+User=root
+UMask=0
+StandardInput=null
+StandardOutput=null
+PrivateTmp=yes
+ExecStart=/usr/sbin/dht22-sensor
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
