@@ -19,6 +19,16 @@ See https://pinout.xyz/pinout/wiringpi
 - 3v3 (any)
 - GND (any)
 
+## Build instructions
+
+```{.bash}
+mkdir build
+cd build
+cmake ../path/to/dht22-sensor
+cmake --build .
+cpack -G DEB
+```
+
 ## To do
 
 - Configuration file support
