@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Type=forking
+PIDFile=dht22-sensor.pid
 WorkingDirectory=/
 User=root
 UMask=0

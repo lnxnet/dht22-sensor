@@ -1,7 +1,7 @@
 # dht22-sensor CMake main file
 
 cmake_minimum_required(VERSION 3.6)
-project(dht22-sensor LANGUAGES C VERSION 1.0.0)
+project(dht22-sensor LANGUAGES C VERSION 1.0.1)
 
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "No build type selected, default to Release")

@@ -1,3 +1,4 @@
 #!/bin/bash
 systemctl stop dht22-sensor
 systemctl disable dht22-sensor
+rm -f /run/dht22-sensor.pid

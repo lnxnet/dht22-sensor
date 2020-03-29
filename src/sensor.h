@@ -12,6 +12,7 @@
 #define INFLUX_URL "http://rpi3:8086/write?db=sensor_data&u=basement&p=basement"
 #define INFUX_RETRY_COUNT 3
 #define INFUX_RETRY_DELAY 1000
+#define PID_FILE "/run/dht22-sensor.pid"
 
 /* Types */
 typedef struct {

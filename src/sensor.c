@@ -19,6 +19,7 @@
 #include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
@@ -27,14 +28,20 @@
 #include <sys/types.h>
 #include <curl/curl.h>
 
+int pid_fd;
+
 void sigterm_handler(int signum) {
     syslog(LOG_NOTICE, "%s", strsignal(signum));
     closelog();
+    lockf(pid_fd, F_ULOCK, 0);
+    close(pid_fd);
+    unlink(PID_FILE);
     exit(EXIT_SUCCESS);
 }
 
 static void daemonize() {
     pid_t pid;
+    char buffer[8];
 
     /* Fork off the parent process */
     pid = fork();
@@ -65,6 +72,19 @@ static void daemonize() {
 
     if (wiringPiSetup() == -1) {
         syslog(LOG_ERR, "Couldn't initialise wiringPi");
+        exit(EXIT_FAILURE);
+    }
+
+    /* PID file */
+    pid_fd = open(PID_FILE, O_CREAT|O_WRONLY|O_TRUNC|O_FSYNC, 0640);
+    if (pid_fd < 0) {
+        syslog(LOG_ERR, "Couldn't open PID file");
+        exit(EXIT_FAILURE);
+    }
+    lockf(pid_fd, F_TLOCK, 0);
+    sprintf(buffer, "%d\n", getpid());
+    if (write(pid_fd, buffer, strlen(buffer) + 1) < 0) {
+        syslog(LOG_ERR, "Error writing to PID file");
         exit(EXIT_FAILURE);
     }
 }
